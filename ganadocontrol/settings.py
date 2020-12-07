@@ -25,12 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 INSTALLED_APPS = [
     'control.apps.ControlConfig',
+    'login.apps.LoginConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
+    'bootstrap_modal_forms',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +53,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'login/templates'
+            'login/templates',
+            'control/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -106,10 +111,11 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     ('login',BASE_DIR / 'login/static/'),
+    ('control',BASE_DIR / 'control/static/'),
 ]
 
 # Local Settings
 try:
-    from .settings_local import *
+    from .local_settings import *
 except ImportError:
     pass

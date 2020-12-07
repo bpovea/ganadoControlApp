@@ -1,0 +1,7 @@
+.custom-modal { 
+    background-color: #202940;
+}
+
+button.close{
+    padding-right: 2rem !important;
+}
