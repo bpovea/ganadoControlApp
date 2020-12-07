@@ -1,0 +1,144 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+			
+	<div class="content">
+		<div class="panel-header bg-primary-gradient">
+			<div class="page-inner py-5">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div>
+						<h2 class="text-white pb-2 fw-bold">Inventario</h2>
+						<h5 class="text-white op-7 mb-2">Control de Ingreso</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-inner mt--5">
+			<div class="row row-card-no-pd">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-head-row card-tools-still-right">
+								<h4 class="card-title">Ingresos</h4>
+								<div class="card-tools">
+									<button id="filter-income" class="bs-modal btn btn-icon btn-link btn-primary btn-xs" type="button" name="button" data-form-url="{% url 'filter_income' %}">
+										<span class="fa fa-search"></span>
+									  </button>
+									<button class="btn btn-icon btn-link btn-primary btn-xs" id="create-income">
+										<span class="fa fa-plus"></span>
+									</button>
+								</div>
+							</div>
+							<p class="card-category">
+								Para Añadir un nuevo elemento presiona en el &nbsp;<span class="fa fa-plus"></span>. Los filtros disponibles están en &nbsp;<span class="fa fa-search"></span>.<br/>
+								Da click en  &nbsp;<span class="fa fa-edit"></span>&nbsp;para habilitar la edición, o en  &nbsp;<span class="fa fa-trash"></span>  &nbsp;para eliminar un registro.
+							</p>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-responsive table-hover table-sales">
+										<table class="table">
+											<thead>
+												<tr>
+													<th scope="col">ID</th>
+													<th scope="col">Producto</th>
+													<th scope="col">Fecha</th>
+													<th scope="col">Cantidad</th>
+													<th scope="col">Comentario</th>
+													<th scope="col">Options</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for i in incomes %}
+													<tr>
+														<td>{{ i.id }}</td>
+														<td>{{ i.product_id.name }}</td>
+														<td>{{ i.datetime_in }}</td>
+														<td>{{ i.quantity }}</td>
+														<td>{% if i.commentary %}{{ i.commentary }}{% else %}{{ '---' }}{% endif %}</td>
+														<td>
+															<button id="delete-income" class="btn btn-icon btn-link btn-primary btn-xs bs-modal" data-form-url="{% url 'delete_income' i.pk %}"><span class="fa fa-trash"></span></button>
+														</td>
+													</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+									<div class="pagination">
+										<span class="step-links">
+											{% if page_obj.has_previous %}
+												<a href="?page=1">&laquo; first</a> | 
+												<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+											{% endif %}
+									
+											<span class="current">
+												Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+											</span>
+									
+											{% if page_obj.has_next %}
+												<a href="?page={{ page_obj.next_page_number }}">next</a> | 
+												<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+											{% endif %}
+										</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="mapcontainer">
+										<div id="map-example" class="vmap"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+
+	<!-- Modal 2 with id="modal" -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content"></div>
+		</div>
+  	</div>
+	  
+
+{% endblock content %}
+
+
+{% block javascripts %}
+
+	<!-- bootstrap modal forms -->
+	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			$("#create-income").modalForm({
+				formURL: "{% url 'create_income' %}"
+			});
+
+			// Update, Read and Delete book buttons open modal with id="modal" (default)
+			// The formURL is retrieved from the data of the element
+			$(".bs-modal").each(function () {
+			$(this).modalForm({
+				formURL: $(this).data('form-url')
+			});
+			});
+		
+		});
+	</script>
+
+{% endblock javascripts %}

@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+
+<form method="post" action="" class="custom-modal">
+  {% csrf_token %}
+
+  <div class="modal-header">
+    <h3 class="modal-title">Borrar Ingreso</h3>
+    <button type="button" class="close btn btn-icon btn-link btn-primary btn-xs btn-refresh-card" data-dismiss="modal" aria-label="Close">
+        <span class="fa fa-times"></span>
+      </button>
+  </div>
+
+  <div class="modal-body">
+    <p>Está seguro que desea eliminar este Ingreso de
+      <strong>{{ income.quantity }} de {{ income.product_id.name }} el {{ income.datetime_in }}</strong>?</p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+  </div>
+
+</form>
