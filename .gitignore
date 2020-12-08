@@ -11,3 +11,5 @@ media
 
 control/migrations/
 login/migrations/
+
+env/
